@@ -25,7 +25,7 @@
     var recording = false,
       currCallback;
 
-   /* this.node.onaudioprocess = function(e){
+    this.node.onaudioprocess = function(e){
       if (!recording) return;
       var buffer = [];
       for (var channel = 0; channel < numChannels; channel++){
@@ -35,15 +35,15 @@
         command: 'record',
         buffer: buffer
       });
-    }*/
+    }
 
-    /*this.configure = function(cfg){
+    this.configure = function(cfg){
       for (var prop in cfg){
         if (cfg.hasOwnProperty(prop)){
           config[prop] = cfg[prop];
         }
       }
-    }*/
+    }
 
     this.record = function(){
       recording = true;
@@ -57,10 +57,10 @@
       worker.postMessage({ command: 'clear' });
     }
 
-    /*this.getBuffer = function(cb) {
+    this.getBuffer = function(cb) {
       currCallback = cb || config.callback;
       worker.postMessage({ command: 'getBuffer' })
-    }*/
+    }
 
     this.exportWAV = function(cb, type){
       currCallback = cb || config.callback;
@@ -132,7 +132,6 @@
 				hf.download = 'audio_recording_' + new Date().getTime() + '.mp3';
 				hf.innerHTML = '下载';
 
-				
 
 				li.appendChild(au);
 				li.appendChild(hf);
@@ -214,7 +213,28 @@
 		return f32Buffer;
 	}
 
-	
+	function uploadAudio(mp3Data,length){
+		var reader = new FileReader();
+		reader.onload = function(event){
+			var fd = new FormData();
+			var mp3Name = encodeURIComponent('audio_recording_' + new Date().getTime() + '.mp3');
+			console.log("mp3name = " + mp3Name);
+			fd.append('fname', mp3Name);
+			fd.append('data', event.target.result);
+			fd.append('len',length);
+			$.ajax({
+				type: 'POST',
+				url: '?/usr/upload',
+				data: fd,
+				processData: false,
+				contentType: false
+			}).done(function(data) {
+				//console.log(data);
+				log.innerHTML += "\n" + data;
+			});
+		};
+		reader.readAsDataURL(mp3Data);
+	}
 
     source.connect(this.node);
     this.node.connect(this.context.destination);    //this should not be necessary

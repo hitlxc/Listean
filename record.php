@@ -1,31 +1,28 @@
-<meta charset="utf-8">
+
     <div id="main">
-        
 
         <div class="content">
   <div class="pure-g">
- 
 
   <button class="pure-button" onclick="startRecording(this);">record</button>
   <button class="pure-button" onclick="stopRecording(this);" disabled>stop</button>
 
+  <h2 class="pure-u-1">Recordings</h2>
   <ul class="pure-menu-list" id="recordingslist"></ul>
+
+  <h2 class="pure-u-1">Log</h2>
 
   <pre class="pure-u-1" id="log"></pre>
   <script>
   function __log(e, data) {
     log.innerHTML += e + " " + (data || '')+ "\n" ;
   }
-  //给id为log的元素加内容
-
 
   var audio_context;
   var recorder;
 
   function startUserMedia(stream) {
     var input = audio_context.createMediaStreamSource(stream);
-    //将声音输入这个对像
-    
     __log('Media stream created.' );
     __log("input sample rate " +input.context.sampleRate);
 
@@ -45,7 +42,6 @@
     button.nextElementSibling.disabled = false;
     __log('Recording...');
   }
-  //开始录音的方法
 
   function stopRecording(button) {
     recorder && recorder.stop();
@@ -58,11 +54,9 @@
 
     recorder.clear();
   }
-  //停止录音的方法
-
 
   function createDownloadLink() {
-    recorder && recorder.exportWAV(function(exportWAV) {
+    recorder && recorder.exportWAV(function(blob) {
       /*var url = URL.createObjectURL(blob);
       var li = document.createElement('li');
       var au = document.createElement('audio');
@@ -82,18 +76,14 @@
   window.onload = function init() {
     try {
       // webkit shim
-
-
       window.AudioContext = window.AudioContext || window.webkitAudioContext;
-      audio_context = new AudioContext;
-      //创建一个音频环境对像
-
-      navigator.getUserMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
-      //navigator为浏览器对象，包含浏览器信息。
-      //getUserMedia允许应用程序访问摄像头麦克风
+      navigator.getUserMedia = ( navigator.getUserMedia ||
+                       navigator.webkitGetUserMedia ||
+                       navigator.mozGetUserMedia ||
+                       navigator.msGetUserMedia);
       window.URL = window.URL || window.webkitURL;
 
-      
+      audio_context = new AudioContext;
       __log('Audio context set up.');
       __log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
     } catch (e) {
@@ -103,10 +93,7 @@
     navigator.getUserMedia({audio: true}, startUserMedia, function(e) {
       __log('No live audio input: ' + e);
     });
-    //getUserMedia方法，第一个参数是麦克风，第二个是成功的回调函数，第三个是失败的回调函数
   };
-  //js入口
-
   </script>
 
 
