@@ -89,6 +89,7 @@
         
         console.log(data.samples);
         console.log(getEnergy(data.samples))
+
 		console.log("Converting to Mp3");
 		log.innerHTML += "Converting to Mp3"+"\n";
 
