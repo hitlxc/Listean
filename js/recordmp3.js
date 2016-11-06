@@ -84,8 +84,11 @@
 		arrayBuffer = this.result;
 		var buffer = new Uint8Array(arrayBuffer),
         data = parseWav(buffer);
-
-        console.log(data);
+		//console.log(data);
+        console.log(buffer);
+        
+        console.log(data.samples);
+        console.log(getEnergy(data.samples))
 		console.log("Converting to Mp3");
 		log.innerHTML += "Converting to Mp3"+"\n";
 
