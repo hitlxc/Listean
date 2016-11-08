@@ -88,6 +88,10 @@
         console.log(buffer);
         
         console.log(data.samples);
+
+        console.log(data.samples.slice(0,data.samples.length/2));
+		console.log(data.samples.slice(data.samples.length/2));
+
         console.log(getEnergy(data.samples))
 
 		console.log("Converting to Mp3");
